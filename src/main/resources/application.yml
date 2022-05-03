@@ -1,0 +1,24 @@
+kafka:
+  event: eacloud,activity
+  listener:
+    eacloud:
+      topic:
+        normal: eacloud
+        retry: retry
+        dlt: dlt
+      group: ea-consumer
+      thread: 1
+    activity:
+      topic:
+        normal: activity
+        retry: retry
+        dlt: dlt
+      group: activity-consumer
+      thread: 1
+
+
+
+spring:
+  main:
+    web-application-type: NONE
+    web-environment: false
