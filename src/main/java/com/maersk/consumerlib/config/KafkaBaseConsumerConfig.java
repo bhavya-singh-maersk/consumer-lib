@@ -134,7 +134,7 @@ public class KafkaBaseConsumerConfig <T> {//implements KafkaListenerConfigurer {
 
 
     @Bean
-    public ConsumerFactory<String, T> deliveryOrderGcssResponseconsumerFactory() {
+    public ConsumerFactory<String, T> consumerFactory() {
         Map<String, Object> properties = new HashMap<>();
         setCommonFactoryProperties(properties, consumerGroup, password);
         return new DefaultKafkaConsumerFactory<>(properties);
@@ -166,12 +166,12 @@ public class KafkaBaseConsumerConfig <T> {//implements KafkaListenerConfigurer {
 
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, T> gcssResponseKafkaListenerContainerFactory(
+    public ConcurrentKafkaListenerContainerFactory<String, T> kafkaListenerContainerFactory(
             StringJsonMessageConverter messageConverter, KafkaTemplate<String, T> kafkaTemplate) {
         ConcurrentKafkaListenerContainerFactory<String, T> factory = new ConcurrentKafkaListenerContainerFactory<>();
 
         factory.setMessageConverter(messageConverter);
-        factory.setConsumerFactory(deliveryOrderGcssResponseconsumerFactory());
+        factory.setConsumerFactory(consumerFactory());
         factory.setConcurrency(consumerConcurrency);
         factory.setRetryTemplate(retryTemplate());
         //factory.setStatefulRetry(true);
@@ -183,6 +183,23 @@ public class KafkaBaseConsumerConfig <T> {//implements KafkaListenerConfigurer {
             kafkaTemplate.send("retry", consumerRecord.value());
             return Optional.empty();
         });
+        /*factory.setRecoveryCallback(context -> {
+            if ((context.getLastThrowable() instanceof TimeoutException)
+                    || (context.getLastThrowable() instanceof RuntimeException))
+            {
+                log.info("Inside recovery method");
+                    ConsumerRecord<String, T> record = (ConsumerRecord) context.getAttribute(RetryingMessageListenerAdapter.CONTEXT_RECORD);
+                    kafkaTemplate().send("retry", record.value());
+                    ((Acknowledgment)context.getAttribute(RetryingMessageListenerAdapter.CONTEXT_ACKNOWLEDGMENT)).acknowledge();
+
+            }
+            else
+            {
+                throw new RuntimeException("Non-recoverable error");
+            }
+            return null;
+        });
+*/
         return factory;
     }
 
