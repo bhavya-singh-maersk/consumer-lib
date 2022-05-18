@@ -40,7 +40,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
-@Configuration
+//@Configuration
 @RequiredArgsConstructor
 public class KafkaBaseConsumerConfig <T> {//implements KafkaListenerConfigurer {
 
@@ -113,7 +113,7 @@ public class KafkaBaseConsumerConfig <T> {//implements KafkaListenerConfigurer {
         }
     }
 
-    @Bean
+   // @Bean
     public ProducerFactory<String, T> producerFactory() {
         Map<String, Object> properties = new HashMap<>();
         properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
@@ -133,7 +133,7 @@ public class KafkaBaseConsumerConfig <T> {//implements KafkaListenerConfigurer {
     }
 
 
-    @Bean
+   // @Bean
     public ConsumerFactory<String, T> consumerFactory() {
         Map<String, Object> properties = new HashMap<>();
         setCommonFactoryProperties(properties, consumerGroup, password);
@@ -153,19 +153,19 @@ public class KafkaBaseConsumerConfig <T> {//implements KafkaListenerConfigurer {
         addTruststoreProperties(properties, truststoreLocation, truststorePassword);
     }
 
-    @Bean
+    //@Bean
     public KafkaTemplate kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 
-    @Bean
+    //@Bean
     public StringJsonMessageConverter stringJsonMessageConverter(ObjectMapper mapper) {
         return new StringJsonMessageConverter(mapper);
     }
 
 
 
-    @Bean
+   // @Bean
     public ConcurrentKafkaListenerContainerFactory<String, T> kafkaListenerContainerFactory(
             StringJsonMessageConverter messageConverter, KafkaTemplate<String, T> kafkaTemplate) {
         ConcurrentKafkaListenerContainerFactory<String, T> factory = new ConcurrentKafkaListenerContainerFactory<>();
@@ -191,7 +191,6 @@ public class KafkaBaseConsumerConfig <T> {//implements KafkaListenerConfigurer {
                     ConsumerRecord<String, T> record = (ConsumerRecord) context.getAttribute(RetryingMessageListenerAdapter.CONTEXT_RECORD);
                     kafkaTemplate().send("retry", record.value());
                     ((Acknowledgment)context.getAttribute(RetryingMessageListenerAdapter.CONTEXT_ACKNOWLEDGMENT)).acknowledge();
-
             }
             else
             {

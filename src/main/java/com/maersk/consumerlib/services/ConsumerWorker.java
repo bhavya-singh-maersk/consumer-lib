@@ -10,7 +10,7 @@ import java.util.List;
 public class ConsumerWorker<T> implements Worker<T>{
 
     @Override
-    public void doWork(List<T> messages) {
+    public void processMessages(List<T> messages) {
          log.info("Consumed message: {}", messages);
     }
 }

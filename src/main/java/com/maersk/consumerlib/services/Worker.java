@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface Worker <T> {
 
-    void doWork(List<T> messages);
+    void processMessages(List<T> messages);
 }

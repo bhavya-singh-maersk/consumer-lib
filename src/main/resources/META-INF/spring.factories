@@ -1,2 +1,8 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.maersk.consumerlib.config.KafkaBaseConsumerConfig
+com.maersk.consumerlib.config.KafkaConsumerConfig,\
+com.maersk.consumerlib.config.KafkaCustomConfig,\
+com.maersk.consumerlib.kafka.ConsumerFactory,\
+com.maersk.consumerlib.kafka.KafkaConfigResolver,\
+com.maersk.consumerlib.kafka.KafkaConsumer,\
+com.maersk.consumerlib.kafka.KafkaConsumerInitiator,\
+com.maersk.consumerlib.kafka.KafkaConsumerRunner
